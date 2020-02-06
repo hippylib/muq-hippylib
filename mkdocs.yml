@@ -1,0 +1,29 @@
+site_name: hIPPYlib
+docs_dir: 'src'
+
+markdown_extensions:
+- extra  # allow markdown in <div markdown="1">
+- fenced_code  # GitHub style code blocks, e.g. ```python, see http://highlightjs.readthedocs.org/en/latest/css-classes-reference.html for a list of languages
+- mdx_math: # MathJax extension. Use \(...\) for inline; \[ ...\] for standalone math
+    enable_dollar_delimiter: True # allows $...$ for inline math
+
+repo_url: https://github.com/hippylib/hippylib
+edit_uri: ""
+
+pages:
+- Home: index.md
+- Tutorial: tutorial.md
+- Research: research.md
+- Outreach: outreach.md
+- About: about.md
+
+#theme_dir: template
+theme: spacelab
+
+google_analytics: ['UA-52448613-3', 'hippylib.github.io']
+
+
+extra_javascript: 
+    - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+    
+copyright: This material is based on work partially supported by the National Science Foundation under Grants No ACI-1550487, ACI-1550547, ACI-1550593. 
