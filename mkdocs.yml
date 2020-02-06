@@ -1,4 +1,4 @@
-site_name: hIPPYlib
+site_name: MUQ-hIPPYlib
 docs_dir: 'src'
 
 markdown_extensions:
@@ -7,7 +7,7 @@ markdown_extensions:
 - mdx_math: # MathJax extension. Use \(...\) for inline; \[ ...\] for standalone math
     enable_dollar_delimiter: True # allows $...$ for inline math
 
-repo_url: https://github.com/hippylib/hippylib
+repo_url: ""
 edit_uri: ""
 
 pages:
