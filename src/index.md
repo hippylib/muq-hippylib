@@ -51,7 +51,7 @@ and [hIPPYlib](https://hippylib.github.io/tutorial_v3.0.0/) websites.
 We are working on a manuscript describing the integrated MUQ-hIPPYlib framework.
 For the time being please cite
 
-```bash
+```csv
 Omar Ghattas, Ki-Tae Kim, Youssef Marzouk, Matthew Parno, Noemi Petra, and Umberto Villa. 
 SI2-SSI: Integrating Data with Complex Predictive Models under Uncertainty: 
 An Extensible Software Framework for Large-Scale Bayesian Inversion.
