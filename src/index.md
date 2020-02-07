@@ -1,4 +1,4 @@
-# Muq - hIPPYlib Integration
+# MUQ - hIPPYlib Integration
 
 
 Recent years have seen a massive explosion of datasets across all areas of science,
