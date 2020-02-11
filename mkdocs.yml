@@ -12,7 +12,7 @@ edit_uri: ""
 
 pages:
 - Home: index.md
-- Tutorial: tutorials/SubsurfaceBayesian.md
+- Tutorial: tutorial.md
 - Research: research.md
 - Outreach: outreach.md
 - About: about.md
