@@ -97,13 +97,8 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#bayesian-quantification-of-parameter-uncertainty">Bayesian quantification of parameter uncertainty:</a></li>
             <li><a href="#i-estimating-the-posterior-pdf-of-the-coefficient-parameter-field-in-an-elliptic-pde">I. Estimating the posterior pdf of the coefficient parameter field in an elliptic PDE</a></li>
-            <li><a href="#this-tutorial-shows">This tutorial shows:</a></li>
-            <li><a href="#goals">Goals:</a></li>
-            <li><a href="#mathematical-tools-used">Mathematical tools used:</a></li>
-            <li><a href="#list-of-software-used">List of software used:</a></li>
-            <li><a href="#references">References</a></li>
             <li><a href="#ii-hippylib-muq-integration">II. hIPPYlib-MUQ integration</a></li>
-            <li><a href="#iii-implementation-of-the-example-problem">III. Implementation of the example problem</a></li>
+            <li><a href="#iii-implementation">III. Implementation</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -114,7 +109,7 @@
 \def\vec{\bf}
 \def\m{ {\bf m}}
 \def\map{m_{\nu}}
-\def\postcov{ \mathcal{C}_{\text{post}} }
+\def\postcov{ \mathcal{C}_{\nu} }
 \def\prcov{ \mathcal{C}_{\text{prior}} }
 \def\matrix{\bf}
 \def\Hmisfit{ \mathcal{H}_{\text{misfit}} }
@@ -125,7 +120,7 @@
 \def\Dr{{\matrix D}_r}
 \def\H{{\matrix H} }
 \def\matHmis{ {\H}_{\rm misfit}}
-\def\Gpost{\boldsymbol{\Gamma}_{\rm post} }
+\def\Gpost{\boldsymbol{\Gamma}_{\nu} }
 \def\Gprior{ \boldsymbol{\Gamma}_{\rm prior} }
 </script>
 </p>
@@ -142,7 +137,7 @@ is a posterior distribution that assigns to any candidate set of
 parameter fields, our belief (expressed as a probability) that a
 member of this candidate set is the "true" parameter field that
 gave rise to the observed data.</p>
-<h3 id="bayess-theorem">Bayes's Theorem</h3>
+<h4 id="bayess-theorem">Bayes's Theorem</h4>
 <p>The posterior probability distribution combines the prior pdf
 <script type="math/tex">\mu_{\text{prior}}(m)</script> over the parameter space, which encodes
 any knowledge or assumptions about the parameter space that we may
@@ -159,10 +154,9 @@ d \mu_{\text{post}}(m | \data) \propto \pi_{\text{like}}(\data \,|\, m) \, d\mu_
 </script>
 </p>
 <p>Note that infinite-dimensional analog of Bayes's formula requires the use Radon-Nikodym derivatives instead of probability density functions.</p>
-<h3 id="gaussian-prior-and-noise">Gaussian prior and noise</h3>
-<h4 id="the-prior">The prior</h4>
+<h5 id="the-prior">The prior</h5>
 <p>We consider a Gaussian prior with mean <script type="math/tex">{m}_{\rm prior}</script> and covariance <script type="math/tex">\prcov</script>, <script type="math/tex">\mu_{\rm prior} \sim \mathcal{N}({m}_{\rm prior}, \prcov)</script>. The covariance is given by the discretization of the inverse of differential operator <script type="math/tex">\mathcal{A}^{-2} = (-\gamma \Delta + \delta I)^{-2}</script>, where <script type="math/tex">\gamma</script>, <script type="math/tex">\delta > 0</script> control the correlation length and the variance of the prior operator. This choice of prior ensures that it is a trace-class operator, guaranteeing bounded pointwise variance and a well-posed infinite-dimensional Bayesian inverse problem.</p>
-<h4 id="the-likelihood">The likelihood</h4>
+<h5 id="the-likelihood">The likelihood</h5>
 <p>
 <script type="math/tex; mode=display">
 \data =  {\bf f}(m) + {\bf e }, \;\;\;  {\bf e} \sim \mathcal{N}({\bf 0}, {\bf \Gamma}_{\text{noise}} )
@@ -176,14 +170,14 @@ d \mu_{\text{post}}(m | \data) \propto \pi_{\text{like}}(\data \,|\, m) \, d\mu_
 <p>Here <script type="math/tex">{\bf f}</script> is the parameter-to-observable map that takes a parameter <script type="math/tex">m</script> and maps
 it to the space observation vector <script type="math/tex">\data</script>.</p>
 <p>In this application, <script type="math/tex">{\bf f}</script> consists in the composition of a PDE solve (to compute the state <script type="math/tex">u</script>) and a pointwise observation of the state <script type="math/tex">u</script> to extract the observation vector <script type="math/tex">\data</script>.</p>
-<h4 id="the-posterior">The posterior</h4>
+<h5 id="the-posterior">The posterior</h5>
 <p>
 <script type="math/tex; mode=display">
 d\mu_{\text{post}}(m \; | \; \data)  \propto \exp \left( - \tfrac{1}{2} \parallel {\bf f}(m) - \data \parallel^{2}_{{\bf \Gamma}_{\text{noise}}^{-1}} \! - \tfrac{1}{2}\parallel m - m_{\rm prior} \parallel^{2}_{\prcov^{-1}} \right)
 </script>
 </p>
-<h3 id="the-laplace-approximation-to-the-posterior-nu-sim-mathcalnmapbf-postcov">The Laplace approximation to the posterior: <script type="math/tex">\nu \sim \mathcal{N}({\map},\bf \postcov)</script>
-</h3>
+<h4 id="the-laplace-approximation-to-the-posterior-nu-sim-mathcalnmapbf-postcov">The Laplace approximation to the posterior: <script type="math/tex">\nu \sim \mathcal{N}({\map},\bf \postcov)</script>
+</h4>
 <p>The mean of the Laplace approximation posterior distribution, <script type="math/tex">{\map}</script>, is the
 parameter maximizing the posterior, and
 is known as the maximum a posteriori (MAP) point.  It can be found
@@ -206,7 +200,7 @@ the Hessian matrix of <script type="math/tex">\mathcal{J}</script> at <script ty
 </script>
 </p>
 <p>provided that <script type="math/tex">\Hmisfit(\map)</script> is positive semidefinite.</p>
-<h4 id="the-generalized-eigenvalue-problem">The generalized eigenvalue problem</h4>
+<h5 id="the-generalized-eigenvalue-problem">The generalized eigenvalue problem</h5>
 <p>In what follows we denote with <script type="math/tex">\matHmis, \Gpost, \Gprior \in \mathbb{R}^{n\times n}</script> the matrices stemming from the discretization of the operators <script type="math/tex">\Hmisfit(\map)</script>, <script type="math/tex">\postcov</script>, <script type="math/tex">\prcov</script> with respect to the unweighted Euclidean inner product.
 Then we considered the symmetric generalized eigenvalue problem</p>
 <p>
@@ -218,7 +212,7 @@ Then we considered the symmetric generalized eigenvalue problem</p>
 contains the generalized eigenvalues and the columns of <script type="math/tex">{\matrix V}\in
 \mathbb R^{n\times n}</script> the generalized eigenvectors such that 
 <script type="math/tex">{\matrix V}^T \Gprior^{-1} {\matrix V} = {\matrix I}</script>.</p>
-<h4 id="randomized-eigensolvers-to-construct-the-approximate-spectral-decomposition">Randomized eigensolvers to construct the approximate spectral decomposition</h4>
+<h5 id="randomized-eigensolvers-to-construct-the-approximate-spectral-decomposition">Randomized eigensolvers to construct the approximate spectral decomposition</h5>
 <p>When the generalized eigenvalues <script type="math/tex">\{\lambda_i\}</script> decay rapidly, we can
 extract a low-rank approximation of <script type="math/tex">\matHmis</script> by retaining only the <script type="math/tex">r</script>
 largest eigenvalues and corresponding eigenvectors,</p>
@@ -231,7 +225,7 @@ largest eigenvalues and corresponding eigenvectors,</p>
 generalized eigenvectors of <script type="math/tex">\matHmis</script> that correspond to the <script type="math/tex">r</script> largest eigenvalues,
 which are assembled into the diagonal matrix <script type="math/tex">{\matrix{\Lambda}}_r = \diag
 (\lambda_i) \in \mathbb{R}^{r \times r}</script>.</p>
-<h4 id="the-approximate-posterior-covariance">The approximate posterior covariance</h4>
+<h5 id="the-approximate-posterior-covariance">The approximate posterior covariance</h5>
 <p>Using the Sherman–Morrison–Woodbury formula, we write</p>
 <p>
 <script type="math/tex; mode=display">
@@ -254,8 +248,8 @@ chosen such that <script type="math/tex">\lambda_r</script> is small relative to
 \Gpost \approx \Gprior - \Vr {\matrix{D}}_r \Vr^T
 </script>
 </p>
-<h4 id="drawing-samples-from-a-gaussian-distribution-with-covariance-gpost">Drawing samples from a Gaussian distribution with covariance <script type="math/tex">\Gpost</script>
-</h4>
+<h5 id="drawing-samples-from-a-gaussian-distribution-with-covariance-gpost">Drawing samples from a Gaussian distribution with covariance <script type="math/tex">\Gpost</script>
+</h5>
 <p>Let <script type="math/tex">{\bf x}</script> be a sample for the prior distribution, i.e. <script type="math/tex">{\bf x} \sim \mathcal{N}({\bf 0}, \Gprior)</script>, then, using the low rank approximation of the posterior covariance, we compute a sample <script type="math/tex">{\bf v} \sim \mathcal{N}({\bf 0}, \Gpost)</script> as</p>
 <p>
 <script type="math/tex; mode=display">
@@ -263,10 +257,10 @@ chosen such that <script type="math/tex">\lambda_r</script> is small relative to
     \Ir)^{-1/2} - \Ir \big] \Vr^T\Gprior^{-1}  + {\bf I} \big\} {\bf x} 
 </script>
 </p>
-<h3 id="full-posterior-sampling-via-markov-chain-monte-carlo-mcmc">Full posterior sampling via Markov chain Monte Carlo (MCMC)</h3>
+<h4 id="full-posterior-sampling-via-markov-chain-monte-carlo-mcmc">Full posterior sampling via Markov chain Monte Carlo (MCMC)</h4>
 <p>The posterior can be fully explored by using MCMC algorithms, the most popular method for sampling from a probability distribution.
 In this example, some of the advanced MCMC algorithms are considered and compared in terms of efficiency and accuracy.</p>
-<h4 id="the-preconditioned-crank-nicolson-algorithm-pcn">The preconditioned Crank-Nicolson algorithm (pCN)</h4>
+<h5 id="the-preconditioned-crank-nicolson-algorithm-pcn">The preconditioned Crank-Nicolson algorithm (pCN)</h5>
 <p>The pCN algorithm is perhaps the simplest MCMC method that is well-defined in the infinite
 dimensional setting ensuring a mixing rates independent of the dimension of the discretized parameter space.</p>
 <p>The algorithm proceeds as follows (see <a href="#Cotter">[Cotter et al. (2013)]</a> <a href="#Pinski">[Pinski et al. (2015)]</a> for the details):
@@ -275,7 +269,7 @@ dimensional setting ensuring a mixing rates independent of the dimension of the 
 \frac{\mu_{\text{post}}(v^{(k+1)}) q(v^{(k+1)}, m^{(k)})}{\mu_{\text{post}}(m^{(k)}) q(m^{(k)}, v^{(k+1)})} \right)</script>
 </p>
 <p>where <script type="math/tex">q(m,v) \sim \mathcal{N}\left( m_{\rm prop} + \sqrt{1 - \beta^2}(m - m_{\rm prop}), \beta^2 \mathcal{C}_{\rm prop} \right)</script> with proposal mean <script type="math/tex">m_{\rm prop}</script> and covariance <script type="math/tex">\mathcal{C}_{\rm prop}</script> and <script type="math/tex">\beta</script> is a parameter controlling the step length of the proposal.</p>
-<h4 id="the-preconditioned-metropolis-adjusted-langevin-algorithm-mala">The preconditioned Metropolis adjusted Langevin algorithm (MALA)</h4>
+<h5 id="the-preconditioned-metropolis-adjusted-langevin-algorithm-mala">The preconditioned Metropolis adjusted Langevin algorithm (MALA)</h5>
 <p>The MALA algorithm is built on two mechanisms: the overdamped Langevin diffusion to propose a move and the Metropolis–Hastings algorithm to accept or reject the proposal move <a href="#Roberts">[Roberts and Tweedie (1996)]</a>.</p>
 <p>The preconditioned MALA algorithm is described as follows:
 1. Given <script type="math/tex">m^{(k)}</script>, propose
@@ -284,12 +278,12 @@ dimensional setting ensuring a mixing rates independent of the dimension of the 
 \frac{\mu_{\text{post}}(v^{(k+1)}) q(v^{(k+1)}, m^{(k)})}{\mu_{\text{post}}(m^{(k)}) q(m^{(k)}, v^{(k+1)})} \right)</script>
 </p>
 <p>where <script type="math/tex">q(m,v) \sim \mathcal{N}\left( m + \tau \mathcal{A}_{\rm prop} \nabla \log \mu_{\text{post}} (m), 2 \tau \mathcal{A}_{\rm prop} \right)</script> with a proposal covariance <script type="math/tex">\mathcal{A}_{\rm prop}</script> and <script type="math/tex">\tau</script> is a step size.</p>
-<h4 id="the-delayed-rejection">The delayed rejection</h4>
+<h5 id="the-delayed-rejection-dr">The Delayed Rejection (DR)</h5>
 <p>The basic idea of the delayed rejection is to use a sequence of stages in each iteration.
 Unlike the basic Metropolis-Hastings algorithm, if a candidate is rejected, a new move is proposed.
 The acceptance rate for the new proposal move is adjusted so that the stationary distribution is preserved.
 For the details, see <a href="#Mira">[Mira (2001)]</a>.</p>
-<h2 id="this-tutorial-shows">This tutorial shows:</h2>
+<h3 id="this-tutorial-shows">This tutorial shows</h3>
 <ul>
 <li>Definition of the component of an inverse problem (the forward problem, the prior, and the misfit functional) using hIPPYlib</li>
 <li>Computation of the maximum a posterior MAP point using inexact Newton-CG algorithm</li>
@@ -299,14 +293,7 @@ For the details, see <a href="#Mira">[Mira (2001)]</a>.</p>
 <li>Exploring the full posterior using the MCMC methods implemented in MUQ</li>
 <li>Convergence diagnostics of MCMC simulation results and their comparison</li>
 </ul>
-<h2 id="goals">Goals:</h2>
-<p>By the end of this notebook, you should be able to:</p>
-<ul>
-<li>Understand the Bayesian inverse framework</li>
-<li>Visualize and understand the results</li>
-<li>Modify the problem and code</li>
-</ul>
-<h2 id="mathematical-tools-used">Mathematical tools used:</h2>
+<h3 id="mathematical-tools-used">Mathematical tools used</h3>
 <ul>
 <li>Finite element method</li>
 <li>Derivation of gradient and Hessian via the adjoint method</li>
@@ -315,7 +302,7 @@ For the details, see <a href="#Mira">[Mira (2001)]</a>.</p>
 <li>Bayes' formula</li>
 <li>MCMC methods</li>
 </ul>
-<h2 id="list-of-software-used">List of software used:</h2>
+<h3 id="list-of-software-used">List of software used</h3>
 <p><a href="https://hippylib.github.io">hIPPYlib</a>, <a href="http://muq.mit.edu">MUQ</a> and their interfaces are the main software framework in this tutorial.
 Additional tools used are:</p>
 <ul>
@@ -324,7 +311,7 @@ Additional tools used are:</p>
 <li><a href="http://www.numpy.org">Numpy</a>, A python package for linear algebra</li>
 <li><a href="http://matplotlib.org">Matplotlib</a>, A python package for visualizing the results</li>
 </ul>
-<h2 id="references">References</h2>
+<h3 id="references">References</h3>
 <p><a id="Cotter">Cotter, S. L., Roberts, G. O., Stuart, A. M., &amp; White, D. (2013)</a>. 
 MCMC methods for functions: modifying old algorithms to make them faster. 
 Statistical Science, 424-446.</p>
@@ -361,7 +348,7 @@ Metron, 59(3-4), 231-241.</p>
 - <code>hippymuq::Param2LogLikelihood</code> : a child of <code>muq::PyModPiece</code> which wraps <code>hippylib::PDEVariationalProblem</code> and <code>hippylib:PointwiseStateObservation</code> (solving the forward problem, mapping from parameters to log likelihood and evaluating its derivative)
 - <code>hippymuq::BiLaplaceGaussian</code> : a child of <code>pymuqModeling::PyGaussianBase</code> which wraps <code>hippylib::BiLaplacianPrior</code>
 - <code>hippymuq::LAPosteriorGaussian</code> : a child of <code>pymuqModeling::PyGaussianBase</code> which wraps <code>hippylib::GaussianLRPosterior</code></p>
-<h2 id="iii-implementation-of-the-example-problem">III. Implementation of the example problem</h2>
+<h2 id="iii-implementation">III. Implementation</h2>
 <h3 id="1-load-modules">1. Load modules</h3>
 <pre><code class="python">from __future__ import absolute_import, division, print_function
 
@@ -479,7 +466,7 @@ plt.show()
 <pre><code>Prior regularization: (delta_x - gamma*Laplacian)^order: delta=0.5, gamma=0.1, order=2
 </code></pre>
 <p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_11_1.png" /></p>
-<h3 id="6-set-up-the-misfit-functional-and-generate-synthetic-observations">6. Set up the misfit functional and generate synthetic observations</h3>
+<h3 id="6-set-up-the-likelihood-and-generate-synthetic-observations">6. Set up the likelihood and generate synthetic observations</h3>
 <p>To setup the observation operator <script type="math/tex">\mathcal{B}: \mathcal{V} \mapsto \mathbb{R}^{n_t}</script>, we generate <script type="math/tex">n_t</script> (<code>ntargets</code> in the code below) random locations where to evaluate the value of the state.</p>
 <p>Under the assumption of Gaussian additive noise, the likelihood function <script type="math/tex">\pi_{\rm like}</script> has the form</p>
 <p>
@@ -544,9 +531,11 @@ print( &quot;Final gradient norm: &quot;, solver.final_grad_norm )
 print( &quot;Final cost:          &quot;, solver.final_cost )
 
 plt.figure(figsize=(15,5))
-nb.plot(dl.Function(Vh[STATE], x[STATE]), subplot_loc=121,mytitle=&quot;State&quot;, cmap=&quot;jet&quot;)
-nb.plot(dl.Function(Vh[PARAMETER], x[PARAMETER]), subplot_loc=122,mytitle=&quot;Parameter&quot;)
+nb.plot(dl.Function(Vh[STATE], x[STATE]), subplot_loc=121,mytitle=&quot;Recovered state&quot;, cmap=&quot;jet&quot;)
+nb.plot(dl.Function(Vh[PARAMETER], x[PARAMETER]), subplot_loc=122,mytitle=&quot;MAP&quot;)
 plt.show()
+
+## true parameter state
 </code></pre>
 
 <pre><code>It  cg_it   cost       misfit     reg        (g,dm)     ||g||L2    alpha      tolcg     
@@ -640,7 +629,7 @@ for i in range(nsamples):
     def __init__(self, Vh, dsGamma):
         self.Vh = Vh
         self.dsGamma = dsGamma
-        self.n = dl.Constant((0.,1.))#dl.FacetNormal(Vh[STATE].mesh())
+        self.n = dl.Constant((0.,1.))
 
         self.u = None
         self.m = None
@@ -666,9 +655,10 @@ dss = dl.Measure(&quot;ds&quot;, subdomain_data=marker)
 qoi = FluxQOI(Vh,dss(1))
 </code></pre>
 
-<h3 id="11-exploring-the-full-posterior-using-mcmc-methods">11. Exploring the full posterior using MCMC methods</h3>
-<h4 id="generate-a-workgraph-of-connected-modpieces">Generate a WorkGraph of connected ModPieces</h4>
-<p>Overall, we want a mapping from parameter coefficients vector to the log target, <script type="math/tex">J(m) = - \tfrac{1}{2} \parallel {\bf f}(m) - \data \parallel^{2}_{{\bf \Gamma}_{\text{noise}}^{-1}} \! - \tfrac{1}{2}\parallel m - m_{\rm prior} \parallel^{2}_{\prcov^{-1}}</script>.</p>
+<h3 id="11-exploring-the-posterior-using-mcmc-methods">11. Exploring the posterior using MCMC methods</h3>
+<h4 id="define-the-parameter-to-observable-map-in-muq">Define the parameter-to-observable map in MUQ</h4>
+<p>Overall, we want a mapping from parameter coefficients vector to the log target, <script type="math/tex">J(m) = - \tfrac{1}{2} \parallel {\bf f}(m) - \data \parallel^{2}_{{\bf \Gamma}_{\text{noise}}^{-1}} \! - \tfrac{1}{2}\parallel m - m_{\rm prior} \parallel^{2}_{\prcov^{-1}}</script>.
+To do so, we generate a MUQ WorkGraph of connected ModPieces.</p>
 <pre><code class="python"># a place holder ModPiece for the parameters
 idparam = mm.IdentityOperator(Vh[PARAMETER].dim())
 
@@ -703,22 +693,22 @@ workgraph.AddEdge(&quot;Identity&quot;, 0, &quot;Log_likelihood&quot;, 0)
 workgraph.AddEdge(&quot;Log_likelihood&quot;, 0, &quot;Log_target&quot;, 1)
 
 workgraph.Visualize(&quot;workgraph.png&quot;)
+
+# Construct the problem
+problem = ms.SamplingProblem(workgraph.CreateModPiece(&quot;Log_target&quot;))
 </code></pre>
 
 <p><img alt="title" src="../workgraph.png" /></p>
 <h4 id="set-up-mcmc-methods">Set up MCMC methods</h4>
 <p>We run five different MCMC methods:
-- pCN : Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = m_{\rm prior} = 0</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \prcov</script>.
-- h-pCN : Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = \map</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \mathcal{C}_{\rm LApost}</script>.
-- MALA : Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \prcov</script>
-- h-MALA : Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \mathcal{C}_{\rm LApost}</script>
-- DR (h-pCN/h-MALA) : Delayed rejection kernel + two stage proposals (h-pCN proposal as first stage and h-MALA proposal as second stage)</p>
-<p>where <script type="math/tex">\mathcal{C}_{\rm LApost}</script> is the covariance of the LA-posterior.</p>
+- <strong>pCN</strong>: Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = m_{\rm prior} = 0</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \prcov</script>.
+- <strong>h-pCN</strong>: Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = \map</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \postcov</script>
+- <strong>MALA</strong>: Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \prcov</script>
+- <strong>h-MALA</strong>: Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \postcov</script>
+- <strong>DR (h-pCN/h-MALA)</strong>: Delayed rejection kernel + two stage proposals (h-pCN proposal as first stage and h-MALA proposal as second stage)</p>
+<p>where <script type="math/tex">\postcov</script> is the covariance of the LA-posterior.</p>
 <p>We set the value of parameters (<script type="math/tex">\beta</script> for pCN and <script type="math/tex">\tau</script> for MALA) such that the acceptance rates are about 20-35% and 50-60% for pCN and MALA, respectively.</p>
-<pre><code class="python"># Construct the problem
-problem = ms.SamplingProblem(workgraph.CreateModPiece(&quot;Log_target&quot;))
-
-# Construct options for MH kernel and MCMC sampler
+<pre><code class="python"># Construct options for MH kernel and MCMC sampler
 options = dict()
 options['NumSamples'] = 22000  # Number of MCMC steps to take
 options['BurnIn'] = 2000  # Number of steps to throw away as burn in
@@ -829,29 +819,6 @@ hm.print_qoiResult(method_list, qoi_dataset)
 hm.plot_qoiResult(method_list, qoi_dataset, max_lag=300)
 </code></pre>
 
-<pre><code>Drawn  20001 MCMC samples using pCN
-Drawn  20001 MCMC samples using h-pCN
-Drawn  20001 MCMC samples using MALA
-Drawn  20001 MCMC samples using h-MALA
-Drawn  20001 MCMC samples using DR (h-pCN/h-MALA)
-
-
-Parameter space dimension: 1089
-Number of samples: 20001
-
-===================================================
- Summary of convergence diagnostics (single chain) 
-===================================================
-
-Method             E[QOI]   AR      ESS  ES/min
------------------------------------------------
-pCN                 0.533  0.257    6.8    0.5
-h-pCN               0.487  0.264  284.4   16.2
-MALA                0.270  0.542    8.2    0.1
-h-MALA              0.589  0.528  296.6    4.5
-DR (h-pCN/h-MALA)   0.538  0.593  428.0    5.2
-</code></pre>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_28_1.png" /></p>
 <p>Copyright &copy; 2020, Army Corps of Engineers, Massachusetts Institute of Technology, University of California--Merced, The University of Texas at Austin, Washington University in St. Louis<br>
 All Rights reserved.<br></p>
 <p><em>Acknowledgment</em>: This work is supported by the National Science Foundation under grants ACI-1550487, ACI-1550547, and ACI-1550593.</p></div>
