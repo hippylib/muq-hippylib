@@ -95,7 +95,7 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#bayesian-quantification-of-parameter-uncertainty">Bayesian quantification of parameter uncertainty:</a></li>
+        <li class="main active"><a href="#bayesian-quantification-of-parameter-uncertainty">Bayesian quantification of parameter uncertainty</a></li>
             <li><a href="#i-estimating-the-posterior-pdf-of-the-coefficient-parameter-field-in-an-elliptic-pde">I. Estimating the posterior pdf of the coefficient parameter field in an elliptic PDE</a></li>
             <li><a href="#ii-hippylib-muq-integration">II. hIPPYlib-MUQ integration</a></li>
             <li><a href="#iii-implementation">III. Implementation</a></li>
@@ -124,7 +124,7 @@
 \def\Gprior{ \boldsymbol{\Gamma}_{\rm prior} }
 </script>
 </p>
-<h1 id="bayesian-quantification-of-parameter-uncertainty">Bayesian quantification of parameter uncertainty:</h1>
+<h1 id="bayesian-quantification-of-parameter-uncertainty">Bayesian quantification of parameter uncertainty</h1>
 <h2 id="i-estimating-the-posterior-pdf-of-the-coefficient-parameter-field-in-an-elliptic-pde">I. Estimating the posterior pdf of the coefficient parameter field in an elliptic PDE</h2>
 <p>In this example we tackle the problem of quantifying the
 uncertainty in the solution of an inverse problem governed by an
@@ -326,28 +326,36 @@ On Metropolis-Hastings algorithms with delayed rejection.
 Metron, 59(3-4), 231-241.</p>
 <h2 id="ii-hippylib-muq-integration">II. hIPPYlib-MUQ integration</h2>
 <p>The main objective of this example is to illustrate the interface between <a href="https://hippylib.github.io">hIPPYlib</a> and <a href="http://muq.mit.edu">MUQ</a>.</p>
-<p>We make use of <a href="https://hippylib.github.io">hIPPYlib</a> to
-- Define the forward model, prior distribution, and likelihood function
-- Compute the MAP point by solving a deterministic inverse problem
-- Construct the Laplace Approximation to the posterior distribution with a low-rank based approximation of the covariace operator.</p>
-<p>The main classes and functions of <a href="https://hippylib.github.io">hIPPYlib</a> employed in this example are
-- <code>hippylib::PDEVariationalProblem</code> : forward, adjoint and incremental problems solvers and their derivatives evaluations
-- <code>hippylib::BiLaplacianPrior</code> : a biLaplacian Gaussian prior model
-- <code>hippylib::GaussianLRPosterior</code> : the low rank Gaussian approximation of the posterior (used for generating starting points of MCMC simulations)</p>
+<p>We make use of <a href="https://hippylib.github.io">hIPPYlib</a> to</p>
+<ul>
+<li>Define the forward model, prior distribution, and likelihood function</li>
+<li>Compute the MAP point by solving a deterministic inverse problem</li>
+<li>Construct the Laplace Approximation to the posterior distribution with a low-rank based approximation of the covariace operator.</li>
+</ul>
+<p>The main classes and functions of <a href="https://hippylib.github.io">hIPPYlib</a> employed in this example are</p>
+<ul>
+<li><code>hippylib::PDEVariationalProblem</code> : forward, adjoint and incremental problems solvers and their derivatives evaluations</li>
+<li><code>hippylib::BiLaplacianPrior</code> : a biLaplacian Gaussian prior model</li>
+<li><code>hippylib::GaussianLRPosterior</code> : the low rank Gaussian approximation of the posterior (used for generating starting points of MCMC simulations)</li>
+</ul>
 <p><a href="http://muq.mit.edu">MUQ</a> is used to sample from the posterior by implementing MCMC methods with various kernels and proposals. </p>
-<p>The main classes and functions used here are
-- <code>pymuqModeling::PyModPiece</code> : an abstract interface for defining vector-valued models
-- <code>pymuqModeling::PyGaussianBase</code> : an abstract interface for implementing Gaussian distributions
-- <code>pymuqModeling::WorkGraph</code> : a graph or a frame of connected <code>pymuqModeling::PyModPiece</code> (or <code>pymuqModeling::WorkPiece</code>) classes
-- <code>pymuqSamplingAlgorithms::CrankNicolsonProposal</code> : the pCN proposal
-- <code>pymuqSamplingAlgorithms::MALAProposal</code> : the MALA proposal
-- <code>pymuqSamplingAlgorithms::MHKernel</code> : the Metropolis-Hastings transition kernel
-- <code>pymuqSamplingAlgorithms::DRKernel</code> : the delayed rejection kernel
-- <code>pymuqSamplingAlgorithms::SingleChainMCMC</code> : a single chain MCMC sampler</p>
-<p>To interface <a href="https://hippylib.github.io">hIPPYlib</a> and <a href="http://muq.mit.edu">MUQ</a> for this example, <code>hippymuq</code> provides the following classes:
-- <code>hippymuq::Param2LogLikelihood</code> : a child of <code>muq::PyModPiece</code> which wraps <code>hippylib::PDEVariationalProblem</code> and <code>hippylib:PointwiseStateObservation</code> (solving the forward problem, mapping from parameters to log likelihood and evaluating its derivative)
-- <code>hippymuq::BiLaplaceGaussian</code> : a child of <code>pymuqModeling::PyGaussianBase</code> which wraps <code>hippylib::BiLaplacianPrior</code>
-- <code>hippymuq::LAPosteriorGaussian</code> : a child of <code>pymuqModeling::PyGaussianBase</code> which wraps <code>hippylib::GaussianLRPosterior</code></p>
+<p>The main classes and functions used here are</p>
+<ul>
+<li><code>pymuqModeling::PyModPiece</code> : an abstract interface for defining vector-valued models</li>
+<li><code>pymuqModeling::PyGaussianBase</code> : an abstract interface for implementing Gaussian distributions</li>
+<li><code>pymuqModeling::WorkGraph</code> : a graph or a frame of connected <code>pymuqModeling::PyModPiece</code> (or <code>pymuqModeling::WorkPiece</code>) classes</li>
+<li><code>pymuqSamplingAlgorithms::CrankNicolsonProposal</code> : the pCN proposal</li>
+<li><code>pymuqSamplingAlgorithms::MALAProposal</code> : the MALA proposal</li>
+<li><code>pymuqSamplingAlgorithms::MHKernel</code> : the Metropolis-Hastings transition kernel</li>
+<li><code>pymuqSamplingAlgorithms::DRKernel</code> : the delayed rejection kernel</li>
+<li><code>pymuqSamplingAlgorithms::SingleChainMCMC</code> : a single chain MCMC sampler</li>
+</ul>
+<p>To interface <a href="https://hippylib.github.io">hIPPYlib</a> and <a href="http://muq.mit.edu">MUQ</a> for this example, <code>hippymuq</code> provides the following classes:</p>
+<ul>
+<li><code>hippymuq::Param2LogLikelihood</code> : a child of <code>muq::PyModPiece</code> which wraps <code>hippylib::PDEVariationalProblem</code> and <code>hippylib:PointwiseStateObservation</code> (solving the forward problem, mapping from parameters to log likelihood and evaluating its derivative)</li>
+<li><code>hippymuq::BiLaplaceGaussian</code> : a child of <code>pymuqModeling::PyGaussianBase</code> which wraps <code>hippylib::BiLaplacianPrior</code></li>
+<li><code>hippymuq::LAPosteriorGaussian</code> : a child of <code>pymuqModeling::PyGaussianBase</code> which wraps <code>hippylib::GaussianLRPosterior</code></li>
+</ul>
 <h2 id="iii-implementation">III. Implementation</h2>
 <h3 id="1-load-modules">1. Load modules</h3>
 <pre><code class="python">from __future__ import absolute_import, division, print_function
@@ -458,14 +466,14 @@ print(&quot;Prior regularization: (delta_x - gamma*Laplacian)^order: &quot;
 mtrue = true_model(prior)
 
 objs = [dl.Function(Vh[PARAMETER],mtrue), dl.Function(Vh[PARAMETER],prior.mean)]
-mytitles = [&quot;True Parameter&quot;, &quot;Prior mean&quot;]
+mytitles = [&quot;True parameter&quot;, &quot;Prior mean&quot;]
 nb.multi1_plot(objs, mytitles)
 plt.show()
 </code></pre>
 
 <pre><code>Prior regularization: (delta_x - gamma*Laplacian)^order: delta=0.5, gamma=0.1, order=2
 </code></pre>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_11_1.png" /></p>
+<p><img alt="png" src="../tutorial_files/tutorial_11_1.png" /></p>
 <h3 id="6-set-up-the-likelihood-and-generate-synthetic-observations">6. Set up the likelihood and generate synthetic observations</h3>
 <p>To setup the observation operator <script type="math/tex">\mathcal{B}: \mathcal{V} \mapsto \mathbb{R}^{n_t}</script>, we generate <script type="math/tex">n_t</script> (<code>ntargets</code> in the code below) random locations where to evaluate the value of the state.</p>
 <p>Under the assumption of Gaussian additive noise, the likelihood function <script type="math/tex">\pi_{\rm like}</script> has the form</p>
@@ -498,7 +506,7 @@ vmax = max( utrue.max(), misfit.d.max() )
 vmin = min( utrue.min(), misfit.d.min() )
 
 plt.figure(figsize=(15,5))
-nb.plot(dl.Function(Vh[STATE], utrue), mytitle=&quot;True State&quot;, 
+nb.plot(dl.Function(Vh[STATE], utrue), mytitle=&quot;True state&quot;, 
         subplot_loc=121, vmin=vmin, vmax=vmax, cmap=&quot;jet&quot;)
 nb.plot_pts(targets, misfit.d, mytitle=&quot;Observations&quot;, 
             subplot_loc=122, vmin=vmin, vmax=vmax, cmap=&quot;jet&quot;)
@@ -507,7 +515,7 @@ plt.show()
 
 <pre><code>Number of observation points: 300
 </code></pre>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_13_1.png" /></p>
+<p><img alt="png" src="../tutorial_files/tutorial_13_1.png" /></p>
 <h3 id="7-compute-the-map-point">7. Compute the MAP point</h3>
 <p>We used the globalized Newtown-CG method to compute the MAP point.</p>
 <pre><code class="python">m = prior.mean.copy()
@@ -530,12 +538,15 @@ print( &quot;Termination reason:  &quot;, solver.termination_reasons[solver.reas
 print( &quot;Final gradient norm: &quot;, solver.final_grad_norm )
 print( &quot;Final cost:          &quot;, solver.final_cost )
 
-plt.figure(figsize=(15,5))
-nb.plot(dl.Function(Vh[STATE], x[STATE]), subplot_loc=121,mytitle=&quot;Recovered state&quot;, cmap=&quot;jet&quot;)
-nb.plot(dl.Function(Vh[PARAMETER], x[PARAMETER]), subplot_loc=122,mytitle=&quot;MAP&quot;)
+plt.figure(figsize=(18,4))
+mtrue_min = dl.Function(Vh[PARAMETER],mtrue).vector().min()
+mtrue_max = dl.Function(Vh[PARAMETER],mtrue).vector().max()
+nb.plot(dl.Function(Vh[PARAMETER],mtrue), subplot_loc=131, mytitle=&quot;True parameter&quot;, 
+        vmin=mtrue_min, vmax=mtrue_max)
+nb.plot(dl.Function(Vh[PARAMETER], x[PARAMETER]), subplot_loc=132,mytitle=&quot;MAP&quot;, 
+        vmin=mtrue_min, vmax=mtrue_max)
+nb.plot(dl.Function(Vh[STATE], x[STATE]), subplot_loc=133,mytitle=&quot;Recovered state&quot;, cmap=&quot;jet&quot;)
 plt.show()
-
-## true parameter state
 </code></pre>
 
 <pre><code>It  cg_it   cost       misfit     reg        (g,dm)     ||g||L2    alpha      tolcg     
@@ -557,7 +568,7 @@ Termination reason:   Norm of the gradient less than tolerance
 Final gradient norm:  0.10248108935885225
 Final cost:           133.60199155509807
 </code></pre>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_15_1.png" /></p>
+<p><img alt="png" src="../tutorial_files/tutorial_15_1.png" /></p>
 <h3 id="8-compute-the-low-rank-based-laplace-approximation-of-the-posterior-la-posterior">8. Compute the low-rank based Laplace approximation of the posterior (LA-posterior)</h3>
 <p>We used the <em>double pass</em> algorithm to compute a low-rank decomposition of the Hessian Misfit.
 In particular, we solve</p>
@@ -589,9 +600,9 @@ plt.show()
 
 <pre><code>Single/Double Pass Algorithm. Requested eigenvectors: 100; Oversampling 20.
 </code></pre>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_17_1.png" /></p>
+<p><img alt="png" src="../tutorial_files/tutorial_17_1.png" /></p>
 <h3 id="9-drawing-samples-from-the-prior-distribution-and-laplace-approximation">9. Drawing samples from the prior distribution and Laplace Approximation</h3>
-<pre><code class="python">nsamples = 5
+<pre><code class="python">nsamples = 3
 noise = dl.Vector()
 nu.init_vector(noise,&quot;noise&quot;)
 s_prior = dl.Function(Vh[PARAMETER], name=&quot;sample_prior&quot;)
@@ -605,20 +616,29 @@ pr_min   = -2.5*math.sqrt( pr_pw_variance.max() ) + prior.mean.min()
 ps_max   =  2.5*math.sqrt( post_pw_variance.max() ) + nu.mean.max()
 ps_min   = -2.5*math.sqrt( post_pw_variance.max() ) + nu.mean.min()
 
+fig = plt.figure(figsize=(18,8))
 for i in range(nsamples):
     parRandom.normal(1., noise)
     nu.sample(noise, s_prior.vector(), s_post.vector())
-    plt.figure(figsize=(15,5))
-    nb.plot(s_prior, subplot_loc=121,mytitle=&quot;Prior sample&quot;, vmin=pr_min, vmax=pr_max)
-    nb.plot(s_post, subplot_loc=122,mytitle=&quot;Laplace sample&quot;, vmin=ps_min, vmax=ps_max)
-    plt.show()
+
+    impr = nb.plot(s_prior, subplot_loc=231+i, vmin=pr_min, vmax=pr_max, colorbar=None)
+    imps = nb.plot(s_post, subplot_loc=234+i, vmin=ps_min, vmax=ps_max, colorbar=None)
+
+fig.tight_layout()
+fig.subplots_adjust(left=0.15, right=0.8)
+pos_impr = impr.axes.get_position().get_points()
+pos_imps = imps.axes.get_position().get_points()
+height_im = impr.axes.get_position().size[1]
+cbaxes_pr = fig.add_axes([pos_impr[1,0]+0.01, pos_impr[0,1], 0.01, height_im])
+cbaxes_ps = fig.add_axes([pos_imps[1,0]+0.01, pos_imps[0,1], 0.01, height_im])
+fig.colorbar(impr, cbaxes_pr)
+fig.colorbar(imps, cbaxes_ps)
+fig.text(0.15, pos_impr[0,1]+0.125, 'Prior samples', fontsize=20, rotation=90)
+fig.text(0.15, pos_imps[0,1]+0.1, 'Laplace samples', fontsize=20, rotation=90)
+plt.show()
 </code></pre>
 
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_19_0.png" /></p>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_19_1.png" /></p>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_19_2.png" /></p>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_19_3.png" /></p>
-<p><img alt="png" src="../SubsurfaceBayesian_files/SubsurfaceBayesian_19_4.png" /></p>
+<p><img alt="png" src="../tutorial_files/tutorial_19_0.png" /></p>
 <h3 id="10-define-a-quantify-of-interest">10 Define a quantify of interest</h3>
 <p>As a quantity of interest, we consider the log of the flux through the bottom boundary:</p>
 <p>
@@ -700,12 +720,17 @@ problem = ms.SamplingProblem(workgraph.CreateModPiece(&quot;Log_target&quot;))
 
 <p><img alt="title" src="../workgraph.png" /></p>
 <h4 id="set-up-mcmc-methods">Set up MCMC methods</h4>
-<p>We run five different MCMC methods:
-- <strong>pCN</strong>: Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = m_{\rm prior} = 0</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \prcov</script>.
-- <strong>h-pCN</strong>: Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = \map</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \postcov</script>
-- <strong>MALA</strong>: Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \prcov</script>
-- <strong>h-MALA</strong>: Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \postcov</script>
-- <strong>DR (h-pCN/h-MALA)</strong>: Delayed rejection kernel + two stage proposals (h-pCN proposal as first stage and h-MALA proposal as second stage)</p>
+<p>We run five different MCMC methods:</p>
+<ul>
+<li><strong>pCN</strong>: Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = m_{\rm prior} = 0</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \prcov</script>.</li>
+<li><strong>MALA</strong>: Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \prcov</script>
+</li>
+<li><strong>h-pCN</strong>: Metropolis-Hastings kernel + pCN proposal with <script type="math/tex">m_{\rm prop} = \map</script> and <script type="math/tex">\mathcal{C}_{\rm prop} = \postcov</script>
+</li>
+<li><strong>h-MALA</strong>: Metropolis-Hastings kernel + MALA proposal with <script type="math/tex">\mathcal{A}_{\rm prop} = \postcov</script>
+</li>
+<li><strong>DR (h-pCN/h-MALA)</strong>: Delayed rejection kernel + two stage proposals (h-pCN proposal as first stage and h-MALA proposal as second stage)</li>
+</ul>
 <p>where <script type="math/tex">\postcov</script> is the covariance of the LA-posterior.</p>
 <p>We set the value of parameters (<script type="math/tex">\beta</script> for pCN and <script type="math/tex">\tau</script> for MALA) such that the acceptance rates are about 20-35% and 50-60% for pCN and MALA, respectively.</p>
 <pre><code class="python"># Construct options for MH kernel and MCMC sampler
@@ -726,16 +751,6 @@ sampler = ms.SingleChainMCMC(opts, [kern])
 
 method_list['pCN'] = {'Options': opts, 'Sampler': sampler}
 
-# h-pCN
-opts = options.copy()
-opts.update( {'Beta':0.55} )
-gauss_hpcn = hm.LAPosteriorGaussian(nu)
-prop = ms.CrankNicolsonProposal(opts, problem, gauss_hpcn)
-kern = ms.MHKernel(opts, problem, prop)
-sampler = ms.SingleChainMCMC(opts, [kern])
-
-method_list['h-pCN'] = {'Options': opts, 'Sampler': sampler}
-
 # MALA
 opts = options.copy()
 opts.update( {'StepSize':0.000006} )
@@ -745,6 +760,16 @@ kern = ms.MHKernel(opts, problem, prop)
 sampler = ms.SingleChainMCMC(opts, [kern])
 
 method_list['MALA'] = {'Options': opts, 'Sampler': sampler}
+
+# h-pCN
+opts = options.copy()
+opts.update( {'Beta':0.55} )
+gauss_hpcn = hm.LAPosteriorGaussian(nu)
+prop = ms.CrankNicolsonProposal(opts, problem, gauss_hpcn)
+kern = ms.MHKernel(opts, problem, prop)
+sampler = ms.SingleChainMCMC(opts, [kern])
+
+method_list['h-pCN'] = {'Options': opts, 'Sampler': sampler}
 
 # h-MALA
 opts = options.copy()
@@ -774,8 +799,8 @@ hm.print_methodDict(method_list)
 <pre><code>Method             Kernel     Proposal   Beta or Step-size
 ----------------------------------------------------------
 pCN                mh         pcn           5.0e-03
-h-pCN              mh         pcn           5.5e-01
 MALA               mh         mala          6.0e-06
+h-pCN              mh         pcn           5.5e-01
 h-MALA             mh         mala          1.0e-01
 DR (h-pCN/h-MALA)  dr         pcn           1.0e+00
                               mala          1.0e-01
@@ -819,6 +844,29 @@ hm.print_qoiResult(method_list, qoi_dataset)
 hm.plot_qoiResult(method_list, qoi_dataset, max_lag=300)
 </code></pre>
 
+<pre><code>Drawn  20001 MCMC samples using pCN
+Drawn  20001 MCMC samples using MALA
+Drawn  20001 MCMC samples using h-pCN
+Drawn  20001 MCMC samples using h-MALA
+Drawn  20001 MCMC samples using DR (h-pCN/h-MALA)
+
+
+Parameter space dimension: 1089
+Number of samples: 20001
+
+===================================================
+ Summary of convergence diagnostics (single chain) 
+===================================================
+
+Method             E[QOI]   AR      ESS  ES/min
+-----------------------------------------------
+pCN                -1.006  0.252    8.8    0.6
+MALA               -0.844  0.550    5.7    0.1
+h-pCN               0.491  0.258  191.1   12.8
+h-MALA              0.553  0.543  305.3    5.4
+DR (h-pCN/h-MALA)   0.505  0.582  550.8    7.8
+</code></pre>
+<p><img alt="png" src="../tutorial_files/tutorial_28_1.png" /></p>
 <p>Copyright &copy; 2020, Army Corps of Engineers, Massachusetts Institute of Technology, University of California--Merced, The University of Texas at Austin, Washington University in St. Louis<br>
 All Rights reserved.<br></p>
 <p><em>Acknowledgment</em>: This work is supported by the National Science Foundation under grants ACI-1550487, ACI-1550547, and ACI-1550593.</p></div>
