@@ -6,6 +6,8 @@ markdown_extensions:
 - fenced_code  # GitHub style code blocks, e.g. ```python, see http://highlightjs.readthedocs.org/en/latest/css-classes-reference.html for a list of languages
 - mdx_math: # MathJax extension. Use \(...\) for inline; \[ ...\] for standalone math
     enable_dollar_delimiter: True # allows $...$ for inline math
+- toc:
+    toc_depth: '1-3'
 
 repo_url: ""
 edit_uri: ""
@@ -17,8 +19,9 @@ pages:
 - Outreach: outreach.md
 - About: about.md
 
-#theme_dir: template
-theme: spacelab
+theme:
+    name: spacelab
+    custom_dir: custom_theme/
 
 google_analytics: ['UA-52448613-3', 'hippylib.github.io']
 

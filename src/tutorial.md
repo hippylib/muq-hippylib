@@ -206,7 +206,7 @@ The acceptance rate for the new proposal move is adjusted so that the stationary
 For the details, see [[Mira (2001)]](#Mira).
 
 
-### This tutorial shows
+#### This tutorial shows
 
 - Definition of the component of an inverse problem (the forward problem, the prior, and the misfit functional) using hIPPYlib
 - Computation of the maximum a posterior MAP point using inexact Newton-CG algorithm
@@ -216,7 +216,7 @@ For the details, see [[Mira (2001)]](#Mira).
 - Exploring the full posterior using the MCMC methods implemented in MUQ
 - Convergence diagnostics of MCMC simulation results and their comparison
 
-### Mathematical tools used
+#### Mathematical tools used
 
 - Finite element method
 - Derivation of gradient and Hessian via the adjoint method
@@ -225,7 +225,7 @@ For the details, see [[Mira (2001)]](#Mira).
 - Bayes' formula
 - MCMC methods
 
-### List of software used
+#### List of software used
 
 <a href="https://hippylib.github.io">hIPPYlib</a>, <a href="http://muq.mit.edu">MUQ</a> and their interfaces are the main software framework in this tutorial.
 Additional tools used are:
@@ -235,7 +235,7 @@ Additional tools used are:
 - <a href="http://www.numpy.org">Numpy</a>, A python package for linear algebra
 - <a href="http://matplotlib.org">Matplotlib</a>, A python package for visualizing the results
 
-### References
+#### References
 
 <a id="Cotter">Cotter, S. L., Roberts, G. O., Stuart, A. M., & White, D. (2013)</a>. 
 MCMC methods for functions: modifying old algorithms to make them faster. 
