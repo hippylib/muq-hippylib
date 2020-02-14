@@ -179,6 +179,7 @@ The pCN algorithm is perhaps the simplest MCMC method that is well-defined in th
 dimensional setting ensuring a mixing rates independent of the dimension of the discretized parameter space.
 
 The algorithm proceeds as follows (see [[Cotter et al. (2013)]](#Cotter) [[Pinski et al. (2015)]](#Pinski) for the details):
+
 1. Given $m^{(k)}$, propose $v^{(k+1)} = m_{\rm prop} + \sqrt{1 - \beta^2}(m^{(k)} - m_{\rm prop}) + \beta \xi^{(k)}, \quad \xi^{(k)} \sim \mathcal{N}( 0, \mathcal{C}_{\rm prop} )$
 2. Set $m^{(k+1)} = v^{(k+1)}$ with probability $a(m^{(k)}, v^{(k+1)}) = \min \left(1, 
 \frac{\mu_{\text{post}}(v^{(k+1)}) q(v^{(k+1)}, m^{(k)})}{\mu_{\text{post}}(m^{(k)}) q(m^{(k)}, v^{(k+1)})} \right)$
@@ -191,6 +192,7 @@ where $q(m,v) \sim \mathcal{N}\left( m_{\rm prop} + \sqrt{1 - \beta^2}(m - m_{\r
 The MALA algorithm is built on two mechanisms: the overdamped Langevin diffusion to propose a move and the Metropolis–Hastings algorithm to accept or reject the proposal move [[Roberts and Tweedie (1996)]](#Roberts).
 
 The preconditioned MALA algorithm is described as follows:
+
 1. Given $m^{(k)}$, propose
 $v^{(k+1)} = m^{(k)} + \tau \mathcal{A}_{\rm prop} \nabla \log \mu_{\text{post}} (m^{(k)}) + \sqrt{2 \tau \mathcal{A}_{\rm prop}} \xi^{(k)}, \quad \xi^{(k)} \sim \mathcal{N}( 0, \mathcal{I})$
 2. Set $m^{(k+1)} = v^{(k+1)}$ with probability $a(m^{(k)}, v^{(k+1)}) = \min \left(1, 
